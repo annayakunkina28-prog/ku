@@ -41,6 +41,10 @@ p{margin:0 0 15px;max-width:68ch}
 .chip:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-1px)}
 .chip[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
 #typeinfo{min-height:3.4em;background:var(--surface-2);border:1px dashed var(--teal);border-radius:var(--radius);padding:14px 18px;margin-top:16px}
+.typecard{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:16px;box-shadow:var(--shadow-sm)}
+.typeicon{flex:none;width:58px;height:58px;display:grid;place-items:center;font-size:30px;line-height:1;background:var(--teal-soft);border-radius:14px}
+.typecard h3{margin:0 0 6px}
+.typecard p{margin:0;font-size:16px}
 button.card{text-align:left;color:var(--ink);font:inherit;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s}
 button.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--teal)}
 button.card[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)}
@@ -65,6 +69,7 @@ footer{max-width:940px;margin:0 auto;padding:0 24px 56px;color:var(--muted);font
 <body>
 <div id="app"></div>
 <script src="ngm-diseases-ru.js"></script>
+<script src="socionics-ru.js"></script>
 <script>
 (function(){
 var T={
@@ -139,12 +144,20 @@ o+='<header><h1>'+t.title+'</h1><p>'+t.sub+'</p></header><nav aria-label="Menu">
 o+='<span class="sp"></span>';
 [["ru","RU"],["uk","УК"],["en","EN"]].forEach(function(x){o+=B("l",x[0],x[1],st.l===x[0],"lg")});
 o+='</div></nav><main>';
-if(st.s==="soc"){var s=t.soc;
+if(st.s==="soc"){var s=t.soc,S=(st.l==="ru"&&window.SOCIONICS_RU)?window.SOCIONICS_RU:null;
 o+='<h2>'+s.h+'</h2><p class="lead">'+s.lead+'</p><p>'+s.p+'</p><div class="quadras">';
 for(var i=0;i<4;i++){o+='<div class="quadra"><h4>'+s.q+': '+s.qn[i]+'</h4>';
-for(var j=0;j<4;j++){var k=i*4+j;o+=B("ty",k,s.ty[k].split("|")[0],st.ty===k,"chip")}o+='</div>'}
+for(var j=0;j<4;j++){var k=i*4+j;o+=B("ty",k,(S?S.emo[k]+" ":"")+s.ty[k].split("|")[0],st.ty===k,"chip")}o+='</div>'}
 var pp=st.ty>=0?s.ty[st.ty].split("|"):0;
-o+='</div><div id="typeinfo" aria-live="polite">'+(pp?pp[0]+' — '+pp[1]+', '+s.q+' '+s.qn[st.ty>>2]:s.pick)+'</div><div class="note"><b>'+t.sci+'.</b> '+s.note+'</div>';
+o+='</div><div id="typeinfo" aria-live="polite">'+(pp?pp[0]+' — '+pp[1]+', '+s.q+' '+s.qn[st.ty>>2]:s.pick)+'</div>';
+if(S&&st.ty>=0){var tn=s.ty[st.ty].split("|")[1];
+o+='<div class="typecard"><div class="typeicon" aria-hidden="true">'+S.emo[st.ty]+'</div><div><span class="tag">'+s.q+' '+s.qn[st.ty>>2]+'</span><h3>'+tn+'</h3><p>'+S.desc[st.ty]+'</p></div></div>';
+o+='<h3>Интертипные отношения</h3><p style="color:var(--muted);font-size:16px">Отношения типа «'+tn+'» с каждым из 16 типов.</p>';
+o+='<div class="tw"><table><tr><th>Тип партнёра</th><th>Ваши отношения</th></tr>';
+for(var j2=0;j2<16;j2++){o+='<tr><td><b>'+s.ty[j2].split("|")[1]+'</b></td><td>'+S.rel[st.ty][j2]+'</td></tr>';}
+o+='</table></div>';
+}
+o+='<div class="note"><b>'+t.sci+'.</b> '+s.note+'</div>';
 }else if(st.s==="kin"){var s=t.kin;
 o+='<h2>'+s.h+'</h2><p class="lead">'+s.lead+'</p><div class="cols">';
 s.c.forEach(function(c){o+='<div class="card"><span class="tag">'+c[0]+'</span><h3>'+c[1]+'</h3><p>'+c[2]+'</p></div>'});
