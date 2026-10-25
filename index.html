@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Человек и система: соционика, кинезиология, вселенская терапия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eeecf5;--surface:#fff;--ink:#1d2342;--muted:#5a6086;--accent:#d99a1c;--teal:#2c7c77;--line:#d3d0e3;--note:#fff4d9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141830;--surface:#1d2342;--ink:#eceaf7;--muted:#a3a8cc;--accent:#f0b43a;--teal:#58b8b1;--line:#343b66;--note:#3a3320;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141830;--surface:#1d2342;--ink:#eceaf7;--muted:#a3a8cc;--accent:#f0b43a;--teal:#58b8b1;--line:#343b66;--note:#3a3320;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "Spectral",Georgia,serif}
+h1,h2,h3,nav,.chip,.tag,button{font-family:"Manrope","Segoe UI",system-ui,sans-serif}
+header{padding:72px 24px 40px;max-width:860px;margin:0 auto}
+h1{font-size:clamp(34px,7vw,64px);line-height:1.05;font-weight:800;letter-spacing:-.02em;margin:0 0 18px}
+header p{max-width:60ch;color:var(--muted);font-size:19px;margin:0}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+nav div{max-width:860px;margin:0 auto;display:flex;gap:6px;padding:10px 24px;overflow-x:auto}
+nav button{flex:none;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 16px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:32px 24px 80px}
+section[hidden]{display:none}
+h2{font-size:clamp(26px,4.5vw,38px);margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 28px;max-width:62ch}
+h3{font-size:18px;margin:28px 0 8px}
+p{margin:0 0 14px;max-width:68ch}
+.note{background:var(--note);border-left:5px solid var(--accent);padding:14px 18px;margin:28px 0 0;max-width:68ch}
+.note b{font-family:"Manrope",sans-serif}
+.quadras{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:12px 0}
+.quadra{background:var(--surface);border:1px solid var(--line);padding:14px;border-radius:14px}
+.quadra h4{margin:0 0 10px;font:800 16px "Manrope",sans-serif}
+.chip{display:inline-block;margin:0 6px 6px 0;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-weight:600;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+#typeinfo{min-height:3.4em;background:var(--surface);border:1px dashed var(--teal);border-radius:12px;padding:12px 16px;margin-top:6px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin:0 0 6px}
+.card p{margin:0;font-size:16px}
+.tag{display:inline-block;font-size:13px;font-weight:600;color:var(--teal);margin-bottom:6px}
+footer{max-width:860px;margin:0 auto;padding:0 24px 48px;color:var(--muted);font-size:14px;font-family:"Manrope",sans-serif}
+</style>
+</head>
+<body>
+<header>
+<h1>Человек и система</h1>
+<p>Три способа смотреть на себя и свои отношения с телом и людьми: типология психики, наука и практика движения, целостные оздоровительные подходы.</p>
+</header>
+<nav aria-label="Разделы"><div role="tablist">
+<button role="tab" id="t-socionics" aria-selected="true" data-s="socionics">Соционика</button>
+<button role="tab" id="t-kinesiology" aria-selected="false" data-s="kinesiology">Кинезиология</button>
+<button role="tab" id="t-therapy" aria-selected="false" data-s="therapy">Вселенская терапия</button>
+</div></nav>
+<main>
+
+<section id="socionics">
+<h2>Соционика</h2>
+<p class="lead">Типология информационного метаболизма: описывает 16 типов личности и то, как они взаимодействуют.</p>
+<p>Основа — теория психологических типов Юнга и представление Аушры Аугустинавичюте (1970-е) о том, что люди по-разному принимают и перерабатывают информацию. Тип определяется четырьмя парами признаков: экстраверсия и интроверсия, сенсорика и интуиция, логика и этика, рациональность и иррациональность.</p>
+<h3>16 типов в четырёх квадрах</h3>
+<p>Квадра — группа из четырёх типов с близкими ценностями. Нажмите на тип, чтобы увидеть его «имя».</p>
+<div class="quadras" id="quadras"></div>
+<div id="typeinfo" aria-live="polite">Выберите тип.</div>
+<h3>Что такое «отношения между типами»</h3>
+<p>Соционика описывает 14 видов межтипных отношений: дуальные, активации, зеркальные, конфликтные и другие. Считается, что в дуальных парах люди дополняют друг друга и чувствуют себя комфортнее.</p>
+<div class="note"><b>Научный статус.</b> Соционика не входит в академическую психологию. Достоверной проверки типов и предсказаний об отношениях нет; в психологии для оценки личности используют модель «Большой пятёрки». Как язык для размышлений о себе подходит, как основание для решений о людях — нет.</div>
+</section>
+
+<section id="kinesiology" hidden>
+<h2>Кинезиология</h2>
+<p class="lead">Слово используют в двух разных значениях. Важно не путать их.</p>
+<div class="cols">
+<div class="card"><span class="tag">Наука</span><h3>Кинезиология как наука о движении</h3><p>Изучает биомеханику, работу мышц, нервную регуляцию движений и двигательное обучение. На ней строятся реабилитация, спортивная медицина и кинезитерапия.</p></div>
+<div class="card"><span class="tag">Практика</span><h3>Прикладная кинезиология</h3><p>Метод, предложенный в 1964 году Джорджем Гудхартом: по силе сопротивления мышцы якобы можно определить, какие продукты, эмоции или органы «в порядке».</p></div>
+<div class="card"><span class="tag">Практика</span><h3>Образовательная кинезиология</h3><p>Упражнения на координацию и перекрёстные движения («Brain Gym»), которые обещают улучшить обучение и внимание.</p></div>
+</div>
+<h3>Что делают на практике</h3>
+<p>В кинезитерапии применяют лечебную физкультуру, упражнения на мобильность и стабильность, тренировку баланса, дозированную нагрузку после травм. В мышечном тестировании специалист слегка давит на вытянутую руку и оценивает, «слабая» она или «сильная» в ответ на вопрос или стимул.</p>
+<div class="note"><b>Научный статус.</b> Кинезиология как наука о движении — полноценная область. Мышечное тестирование для диагностики аллергий, болезней и непереносимости в слепых контролируемых исследованиях не показало результатов лучше случайных, поэтому его нельзя использовать вместо диагностики врача. Упражнения Brain Gym не показали доказанного влияния на учёбу.</div>
+</section>
+
+<section id="therapy" hidden>
+<h2>Вселенская терапия</h2>
+<p class="lead">Название относится к широкому кругу оздоровительных и духовных практик, у которых нет единого стандарта.</p>
+<p>Обычно под таким названием объединяют работу с дыханием, медитацию, визуализацию, телесную осознанность и идею, что состояние человека связано с «полем» или энергией окружающего мира. Конкретные методики у разных школ сильно отличаются, поэтому перед занятиями стоит узнать, что именно будут делать и на каком основании.</p>
+<h3>Что из этого может помочь</h3>
+<div class="cols">
+<div class="card"><h3>Дыхание и расслабление</h3><p>Медленное дыхание и прогрессивная релаксация снижают тревожность и напряжение — это измеряют в исследованиях.</p></div>
+<div class="card"><h3>Осознанность</h3><p>Практики майндфулнес уменьшают стресс и улучшают сон у многих людей.</p></div>
+<div class="card"><h3>Поддержка и ритуал</h3><p>Регулярность, внимание и спокойная обстановка сами по себе дают ощущение опоры.</p></div>
+</div>
+<h3>На что обратить внимание</h3>
+<p>Спрашивайте, какое образование у ведущего, какие результаты обещают и сколько это стоит. Тревожные признаки: обещание вылечить серьёзные болезни, отказ от лекарств, давление и уход от вопросов.</p>
+<div class="note"><b>Научный статус.</b> У «вселенской терапии» как целостной системы нет клинических исследований. Отдельные элементы (дыхание, медитация) изучены, идея лечения «энергией Вселенной» — нет. Практика может дополнять лечение, но не заменяет врача.</div>
+</section>
+
+</main>
+<footer>Материалы носят информационный характер и не заменяют консультацию специалиста.</footer>
+
+<script>
+(function(){
+var Q=[["Альфа",[["ИЛЭ","Дон Кихот"],["СЭИ","Дюма"],["ЭСЭ","Гюго"],["ЛИИ","Робеспьер"]]],
+["Бета",[["ЭИЭ","Гамлет"],["ЛСИ","Максим Горький"],["СЛЭ","Жуков"],["ИЭИ","Есенин"]]],
+["Гамма",[["СЭЭ","Наполеон"],["ИЛИ","Бальзак"],["ЛИЭ","Джек Лондон"],["ЭСИ","Драйзер"]]],
+["Дельта",[["ИЭЭ","Гексли"],["ЛСЭ","Штирлиц"],["СЛИ","Габен"],["ЭИИ","Достоевский"]]]];
+var box=document.getElementById("quadras"),info=document.getElementById("typeinfo");
+Q.forEach(function(q){
+var d=document.createElement("div");d.className="quadra";
+var h=document.createElement("h4");h.textContent="Квадра: "+q[0];d.appendChild(h);
+q[1].forEach(function(t){
+var b=document.createElement("button");b.className="chip";b.type="button";b.setAttribute("aria-pressed","false");b.textContent=t[0];
+b.onclick=function(){
+box.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
+b.setAttribute("aria-pressed","true");
+info.textContent=t[0]+" — «"+t[1]+"», квадра "+q[0]+".";
+};
+d.appendChild(b);
+});
+box.appendChild(d);
+});
+var tabs=document.querySelectorAll("nav button"),secs=document.querySelectorAll("main section");
+function show(id){
+if(!document.getElementById(id))id="socionics";
+secs.forEach(function(s){s.hidden=s.id!==id});
+tabs.forEach(function(t){t.setAttribute("aria-selected",String(t.dataset.s===id))});
+}
+tabs.forEach(function(t){t.onclick=function(){show(t.dataset.s);window.scrollTo({top:0})}});
+var map={socionics:"socionics",kinesiology:"kinesiology",therapy:"therapy"};
+show(map[(location.hash||"").slice(1)]||"socionics");
+})();
+</script>
+</body>
+</html>
