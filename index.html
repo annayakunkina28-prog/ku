@@ -44,6 +44,8 @@ button.card[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 2px v
 .card p{margin:0;font-size:16px}
 .tag{display:inline-block;font-size:13px;font-weight:600;color:var(--teal);margin-bottom:6px}
 .sub{display:flex;gap:8px;margin:20px 0 4px}
+.search{width:100%;max-width:440px;padding:11px 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:16px "Manrope","Segoe UI",system-ui,sans-serif;margin:8px 0 4px}
+.search:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .warn{background:var(--surface);border:1px solid var(--accent)}
 .tw{overflow-x:auto;margin-top:8px}
 table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
@@ -54,6 +56,7 @@ footer{max-width:900px;margin:0 auto;padding:0 24px 48px;color:var(--muted);font
 </head>
 <body>
 <div id="app"></div>
+<script src="ngm-diseases-ru.js"></script>
 <script>
 (function(){
 var T={
@@ -85,11 +88,41 @@ g:["Germ layers and brain (per GNM)",["Layer","Brain region","Tissues"],[["Endod
 d:[["Breast cancer","A conflict of worry and care for a child or partner (“nest conflict”); in right-handed people the left breast means mother/child, the right means partner. Glandular tissue is old mesoderm, cerebellum: the tumor grows in the active phase.","Breast cancer is linked to age, hormonal factors, inherited mutations (such as BRCA1/2) and more. No testable link to conflict exists. Treatment (surgery, radiotherapy, chemo-, hormonal and targeted therapy) improves survival, especially when found early."],["Lung cancer","A death-fright conflict (“fear for life”). Alveoli are endoderm, brain stem: the tumor grows in the active phase.","The main cause is smoking; radon, asbestos and air pollution also contribute. Treatment depends on stage: surgery, radiotherapy, chemo-, targeted and immunotherapy. Refusing treatment sharply lowers the chances."],["Colon cancer","An “indigestible anger” conflict — being unable to “swallow” an insult. The bowel lining is endoderm, brain stem.","It develops from polyps (adenomas) driven by mutations, age, diet and inherited syndromes. Screening (colonoscopy) finds polyps before they become cancer; early surgery often cures it."],["Diabetes","A resistance conflict (“I don’t want this”). A disturbance of the pancreatic islet cells.","Type 1 diabetes is autoimmune destruction of beta cells, and without insulin a person dies; type 2 is tied to insulin resistance, excess weight and heredity. Stopping insulin in type 1 diabetes is life-threatening."],["Leukemia","A self-devaluation conflict (“I am worthless”); leukemia is read as a healing phase (bone is new mesoderm, cerebral medulla).","Leukemias arise from mutations in blood-forming cells. Modern treatment (chemotherapy, targeted therapy, bone marrow transplant) cures many patients; most children with acute lymphoblastic leukemia recover."],["Ovarian and testicular cancer","A loss conflict (losing a loved one or a child). Ovaries and testes are new mesoderm, cerebral medulla.","Testicular cancer is cured in the vast majority of cases when treated in time; ovarian cancer is treated with surgery and chemotherapy. A link to a loss conflict is unproven."]],
 note:"GNM is considered pseudoscientific and dangerous. Emotional stress does affect health, but it does not replace diagnosis and treatment. Patients who refused cancer treatment for GNM are known to have died; Hamer lost his license to practice medicine. If you suspect illness, see a doctor and do not abandon prescribed therapy."}}
 };
-var st={l:"ru",s:"soc",n:"laws",law:-1,dis:-1,ty:-1};
+var DL=(window.NGM_RU_DISEASES||[]);
+var st={l:"ru",s:"soc",n:"laws",law:-1,dis:-1,ty:-1,dq:"",dl:-1};
 try{var sv=localStorage.getItem("lang");if(sv&&T[sv]){st.l=sv}else{var nl=(navigator.language||"").slice(0,2);st.l=nl==="uk"?"uk":nl==="en"?"en":"ru"}}catch(e){}
 var hs=(location.hash||"").slice(1);
 if(hs==="kinesiology")st.s="kin";else if(hs==="ngm")st.s="ngm";
 function B(a,v,t,on,cls,role){return '<button class="'+cls+'" data-a="'+a+'" data-v="'+v+'"'+(role?' role="tab" aria-selected="'+on+'"':' aria-pressed="'+on+'"')+'>'+t+'</button>'}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function dqFind(q){
+var a=[],b=[];
+if(!q)return DL.map(function(d,i){return i});
+DL.forEach(function(d,i){
+var n=d[0].toLowerCase(),k=d[1].toLowerCase();
+if(n.indexOf(q)===0)a.push(i);
+else if(n.indexOf(q)>0||k.indexOf(q)===0)b.push(i);
+else if(d[2]&&d[2].toLowerCase().indexOf(q)>=0)b.push(i);
+});
+return a.concat(b);
+}
+function renderDq(){
+var box=document.getElementById("dres"),det=document.getElementById("ddet");
+if(!box||!det)return;
+var m=dqFind(st.dq.trim().toLowerCase()),lim=60,o="";
+if(!m.length){st.dl=-1;o='<p style="color:var(--muted);margin-top:10px">Ничего не найдено.</p>'}
+else{
+o+='<div class="cols" style="margin-top:10px">';
+m.slice(0,lim).forEach(function(i){o+=B("dl",i,DL[i][0],st.dl===i,"chip")});
+o+='</div><p style="color:var(--muted);font-size:15px;margin-top:6px">'+(m.length>lim?"Показаны первые "+lim+" из "+m.length+" — уточните запрос.":"Найдено: "+m.length)+'</p>';
+}
+box.innerHTML=o;
+if(st.dl<0||m.indexOf(st.dl)<0){det.innerHTML="";return}
+var d=DL[st.dl],x="";
+if(d[2])x=d[2].split("\n").map(function(p){return (p==="Ошибки:"||p==="Новая мысль:")?"<p><b>"+esc(p)+"</b></p>":"<p>"+esc(p)+"</p>"}).join("");
+else x='<p style="color:var(--muted)">Описания для этой болезни в источнике нет.</p>';
+det.innerHTML='<div class="card" style="margin-top:12px"><h3>'+esc(d[0])+'</h3><span class="tag">'+esc(d[1])+'</span>'+x+'</div>';
+}
 function render(){
 var t=T[st.l],o="",y=window.scrollY;
 document.documentElement.lang=st.l;document.title=t.title;
@@ -125,11 +158,17 @@ s.d.forEach(function(d,i){o+=B("dis",i,d[0],st.dis===i,"chip")});
 o+='</div>';
 if(st.dis>=0){var d=s.d[st.dis];o+='<div class="card" style="margin-top:12px"><h3>'+d[0]+'</h3><span class="tag">'+t.cl+'</span><p>'+d[1]+'</p><div class="med"><span class="tag">'+t.md+'</span><p>'+d[2]+'</p></div></div>'}
 else o+='<p style="color:var(--muted);margin-top:12px">'+t.pd+'</p>';
+if(st.l==="ru"&&DL.length){
+o+='<h3>Справочник болезней: поиск</h3><p style="color:var(--muted);font-size:16px">Список из '+DL.length+' болезней с описанием «ошибок мышления». Введите название, чтобы найти болезнь.</p>';
+o+='<input id="dq" class="search" type="search" placeholder="Поиск болезни, например «астма»" aria-label="Поиск болезни" autocomplete="off" value="'+esc(st.dq)+'">';
+o+='<div id="dres"></div><div id="ddet"></div>';
+}
 }
 o+='<div class="note"><b>'+t.sci+'.</b> '+s.note+'</div>';
 }
 o+='</main><footer>'+t.foot+'</footer>';
 document.getElementById("app").innerHTML=o;
+if(st.l==="ru"&&st.s==="ngm"&&st.n==="dis")renderDq();
 window.scrollTo(0,y);
 }
 document.addEventListener("click",function(e){
@@ -140,8 +179,12 @@ else if(a==="l"){st.l=v;try{localStorage.setItem("lang",v)}catch(x){}}
 else if(a==="n"){st.n=v}
 else if(a==="law"){st.law=(+v===st.law)?-1:+v}
 else if(a==="dis"){st.dis=+v}
+else if(a==="dl"){st.dl=(+v===st.dl)?-1:+v;renderDq()}
 else if(a==="ty"){st.ty=+v}
 render();
+});
+document.addEventListener("input",function(e){
+if(e.target&&e.target.id==="dq"){st.dq=e.target.value;st.dl=-1;renderDq()}
 });
 render();
 })();
